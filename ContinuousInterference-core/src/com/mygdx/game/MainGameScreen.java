@@ -118,7 +118,7 @@ public class MainGameScreen extends ScreenAdapter {
 	@Override
 	public void render(float delta) {
 		currTime += delta;
-
+		
 		fps.log();
 
 		camera.unproject(mousePos.set(Gdx.input.getX(), Gdx.input.getY(), 0));
@@ -157,6 +157,7 @@ public class MainGameScreen extends ScreenAdapter {
 				// wavePix.drawPixel(x, y,
 				// Color.rgba8888(ColorUtils.HSV_to_RGB(waveSourceAtPos, 100,
 				// 100)));
+				
 				wavePix.drawPixel(x, y, Color.rgba8888(ColorUtils.HSV_to_RGB(105, waveSourceAtPos, 100)));
 			}
 		}
