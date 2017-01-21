@@ -3,18 +3,26 @@ package model;
 import java.awt.Point;
 
 import logic.Channel;
+import waves.LineUtils;
 
 public class Target {
 	private Point loc;
 	private double targetVal, tolerance;
+	private Level level;
 	private Channel channel;
 	
 	public Target(Level level, String name, Point loc, double targetVal, double tolerance) {
+		this(level,name,loc,targetVal,tolerance,false);
+	}
+	
+	public Target(Level level, String name, Point loc, double targetVal, double tolerance, boolean isPermanent) {
 		this.loc = loc;
 		this.targetVal = targetVal;
 		this.tolerance = tolerance;
+		this.level = level;
 		
-		channel = level.getChannels().makeChannel(name, Channel.Type.VALUE);
+		channel = level.getChannels().makeChannel(name,
+				isPermanent? Channel.Type.PERMANENT : Channel.Type.VALUE);
 		channel.update(false);
 	}
 	
@@ -22,8 +30,35 @@ public class Target {
 		return channel;
 	}
 	
-	public void update() {
+	public void update(float t) {
+		float input = 0;
+		boolean sourceUnobstructed;
 		
+		for(Source s : level.getSources()) {
+			sourceUnobstructed = true;
+			
+			if(!s.isActive()) {
+				continue;
+			}
+			
+			for(Obstacle o : level.getLevelMap().getObstacles()) {
+				if(!o.getActive() || o.getPermittive()) {
+					continue;
+				}
+				
+				if(LineUtils.lineIntersectsRectangle(s.getLocation(), loc, o.getRect())) {
+					sourceUnobstructed = false;
+				}
+			}
+			
+			if(sourceUnobstructed) {
+				float r = (float) loc.distance(s.getLocation());
+				
+				input += (float) s.getWaveEquation().evaluate(t, r);
+			}
+		}
+		
+		setInput(input);
 	}
 	
 	private void setInput(double input) {

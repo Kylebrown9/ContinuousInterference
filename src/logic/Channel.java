@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Channel {
-	public enum Type {OR,AND,VALUE}
+	public enum Type {OR,AND,VALUE,PERMANENT}
 	
 	private ChannelSet channels;
 	private List<String> sources = new ArrayList<>();
@@ -47,6 +47,11 @@ public class Channel {
 			break;
 		case VALUE:
 			setOutput(signal);
+			break;
+		case PERMANENT:
+			if(signal) {
+				setOutput(true);
+			}
 			break;
 		}
 	}

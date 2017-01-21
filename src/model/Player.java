@@ -1,36 +1,33 @@
 package model;
 
 public class Player {
-	private double x,y;
-	private double theta = 0;
-	private long leftOver = 0;
-	private final long movePeriod;
-	private boolean moving = false;
+	private static final float TOLERANCE = 10;
+	
+	private float x,y;
+	private float tX, tY;
+	private float theta = 0;
+	private final float speed;
 	private Source heldItem = null;
 	
-	public Player(double initX, double initY, long movePeriod) {
+	public Player(float initX, float initY, float speed) {
 		this.x = initX;
 		this.y = initY;
-		this.movePeriod = movePeriod;
+		this.speed = speed;
 	}
 	
-	public synchronized void update(long time) {
-		long totalTime = time+leftOver;
-		if(moving) {
-			x += (totalTime/movePeriod)*Math.sin(theta);
-			y += (totalTime/movePeriod)*Math.cos(theta);
-			leftOver = totalTime%movePeriod;
-		} else {
-			leftOver = 0;
-		}
-	}
-	
-	public synchronized void setTheta(double theta) {
-		this.theta = theta;
+	public synchronized void update(float time) {
+		float distance = (float) Math.sqrt((x-tX)*(x-tX)+(y-tY)*(y-tY));
+		
+		if(distance < TOLERANCE) {
+			x += time*speed*Math.sin(theta);
+			y += time*speed*Math.cos(theta);
+		} 
 	}
 
-	public synchronized void setMoving(boolean isMoving) {
-		moving = true;
+	public synchronized void setTargetPoint(float x, float y) {
+		this.tX = x;
+		this.tY = y;
+		this.theta = (float) Math.atan2(this.x-x, this.y-y);
 	}
 	
 	public synchronized double getX() {

@@ -8,7 +8,7 @@ public class WaveEquation {
 		this.v = v;
 	}
 	
-	public double evaluate(long t, float r) {
+	public double evaluate(float t, float r) {
 		return MathUtils.sin(h*(t-(r/v)));
 	}
 }
