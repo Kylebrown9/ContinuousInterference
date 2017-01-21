@@ -34,8 +34,6 @@ public class MainGameScreen extends ScreenAdapter {
 	private OrthographicCamera camera;
 
 	private ExtendViewport viewport;
-	private int scrollPos = 100;
-	
 	private SpriteBatch batch;
 
 	public MainGameScreen(MyGame g) {
@@ -115,6 +113,8 @@ public class MainGameScreen extends ScreenAdapter {
 
 	float currTime = 0;
 
+	private int scrollPos = 500/5;
+
 	@Override
 	public void render(float delta) {
 		currTime += delta;
@@ -122,7 +122,7 @@ public class MainGameScreen extends ScreenAdapter {
 		fps.log();
 
 		camera.unproject(mousePos.set(Gdx.input.getX(), Gdx.input.getY(), 0));
-
+		
 		// Render current wave texture
 		Pixmap wavePix = new Pixmap((int) WAVES_WIDTH, (int) WAVES_HEIGHT, Format.RGBA8888);
 		for (int x = 0; x < wavePix.getWidth(); x++) {
@@ -130,26 +130,34 @@ public class MainGameScreen extends ScreenAdapter {
 				float t = (x + ((mousePos.x + 1) / 2) * -WAVES_WIDTH) * (x + ((mousePos.x + 1) / 2) * -WAVES_WIDTH)
 						+ (y + ((1 - mousePos.y) / 2) * -WAVES_HEIGHT) * (y + ((1 - mousePos.y) / 2) * -WAVES_HEIGHT);
 				t = (float) Math.sqrt(t);
-				t /= (scrollPos / 100f);
+				t /= (scrollPos / 20f);
 
-				float waveSourceAtPos = (float) 0f + (50f * ((MathUtils.sin(t - 40 * currTime) + 1) / 2));
+				float normalizedT = 1 - MathUtils.clamp((t / WAVES_HEIGHT * 5), 0, 1);
+
+				float waveSourceAtPos = (float) 0f + (50f * ((MathUtils.sin(t - 7 * currTime) + 1) / 2) * normalizedT);
 
 				float t2 = (x - WAVES_WIDTH / 2) * (x - WAVES_WIDTH / 2)
 						+ (y - WAVES_HEIGHT / 2) * (y - WAVES_HEIGHT / 2);
 				t2 = (float) Math.sqrt(t2);
 				t2 /= 5;
+				if (t2 == 0) {
+					t2 += 0.001;
+				}
+				
+				float normalizedT2 = 1 - MathUtils.clamp((t2 / WAVES_HEIGHT * 5), 0, 1);
 
-				waveSourceAtPos += (50f * ((MathUtils.sin((t2 - 29 * currTime)+MathUtils.PI/3) + 1) / 2));
+				waveSourceAtPos += (50f * ((MathUtils.sin((t2 - 5 * currTime)) + 1) / 2) * normalizedT2);
 
-				//waveSourceAtPos += currTime * 2;
+				// waveSourceAtPos += currTime * 2;
 
 				while (waveSourceAtPos > 100) {
 					waveSourceAtPos -= 100;
 				}
 
-				//wavePix.drawPixel(x, y, Color.rgba8888(ColorUtils.HSV_to_RGB(waveSourceAtPos, 100, 100)));
-				wavePix.drawPixel(x, y, Color.rgba8888(ColorUtils.HSV_to_RGB(105,
-						waveSourceAtPos, 100)));
+				// wavePix.drawPixel(x, y,
+				// Color.rgba8888(ColorUtils.HSV_to_RGB(waveSourceAtPos, 100,
+				// 100)));
+				wavePix.drawPixel(x, y, Color.rgba8888(ColorUtils.HSV_to_RGB(105, waveSourceAtPos, 100)));
 			}
 		}
 		waveTex.draw(wavePix, 0, 0);
