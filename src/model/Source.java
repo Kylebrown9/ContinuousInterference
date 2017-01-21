@@ -1,22 +1,25 @@
 package model;
 
 import java.awt.Point;
+import java.util.function.Function;
+
+import waves.WaveEquation;
 
 public class Source {
 	private Point location;
-	private Function f;
+	private WaveEquation wE;
 	
-	public Source(Point loc, Function f) {
+	public Source(Point loc, WaveEquation wE) {
 		this.location = loc;
-		this.f = f;
+		this.wE = wE;
 	}
 	
 	public double getActivation(long time) {
-		return f.evaluate(time);
+		return wE.evaluate(time,0);
 	}
 	
-	public Function getFunction() {
-		return f;
+	public WaveEquation getFunction() {
+		return wE;
 	}
 	
 	public Point getLocation() {

@@ -1,6 +1,6 @@
 package model;
 
-import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,11 +11,13 @@ public class GameModel {
 	private final Player player;
 	private final List<Level> levels;
 	
-	public GameModel(BufferedImage[] images) {
-		player = new Player(INITIALX,INITIALY);
+	public GameModel(List<File> jsonFiles) {
+		player = new Player(INITIALX,INITIALY,10);
 		levels = new ArrayList<>();
 		
-		
+		for(File f : jsonFiles) {
+			addLevel(LevelFactory.makeLevel(f));
+		}
 	}
 	
 	public void addLevel(Level l) {

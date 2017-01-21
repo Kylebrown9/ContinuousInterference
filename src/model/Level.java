@@ -2,13 +2,15 @@ package model;
 
 import java.util.List;
 
-import logic.Channel;
+import logic.ChannelSet;
+import logic.LogicListener;
 
-public class Level {
+public class Level implements LogicListener {
 	private LevelMap levelMap;
 	private List<Source> sources;
 	private List<Target> targets;
-	private List<Channel> channels;
+
+	ChannelSet channels;
 	private boolean done = false;
 	
 	public Level() {
@@ -27,8 +29,14 @@ public class Level {
 		return targets;
 	}
 	
-	public void setDone() {
-		done = true;
+	public ChannelSet getChannels() {
+		return channels;
+	}
+	
+	public void notify(boolean signal) {
+		if(signal) {
+			done = true;
+		}
 	}
 	
 	public boolean isDone() {
