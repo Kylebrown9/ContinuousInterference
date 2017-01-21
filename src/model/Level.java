@@ -4,11 +4,20 @@ import java.util.List;
 
 public class Level {
 	private Tile[][] floor;
+	private List<Source> sources;
 	private List<Target> targets;
 	private boolean done = false;
 	
 	public Level() {
 		
+	}
+	
+	public List<Source> getSources() {
+		return sources;
+	}
+	
+	public List<Target> getTargets() {
+		return targets;
 	}
 	
 	public void setDone() {
@@ -21,10 +30,5 @@ public class Level {
 	
 	public Tile[][] getFloor() {
 		return floor.clone();
-	}
-	
-	class LevelDescriptor {
-		
-		private
 	}
 }

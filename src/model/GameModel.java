@@ -15,9 +15,11 @@ public class GameModel {
 		player = new Player(INITIALX,INITIALY);
 		levels = new ArrayList<>();
 		
-		for(BufferedImage image : images) {
-			levels.add(new Level(image));
-		}
+		
+	}
+	
+	public void addLevel(Level l) {
+		levels.add(l);
 	}
 	
 	public Level getLevel(int i) {
