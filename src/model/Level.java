@@ -3,13 +3,17 @@ package model;
 import java.util.List;
 
 public class Level {
-	private Tile[][] floor;
+	private LevelMap levelMap;
 	private List<Source> sources;
 	private List<Target> targets;
 	private boolean done = false;
 	
 	public Level() {
 		
+	}
+	
+	public LevelMap getLevelMap() {
+		return levelMap;
 	}
 	
 	public List<Source> getSources() {
@@ -26,9 +30,5 @@ public class Level {
 	
 	public boolean isDone() {
 		return done;
-	}
-	
-	public Tile[][] getFloor() {
-		return floor.clone();
 	}
 }

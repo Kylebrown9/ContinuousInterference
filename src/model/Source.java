@@ -11,6 +11,10 @@ public class Source {
 		
 	}
 	
+	public Function getFunction() {
+		
+	}
+	
 	public Point getLocation() {
 		
 	}
