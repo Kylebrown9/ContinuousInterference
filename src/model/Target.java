@@ -1,22 +1,21 @@
 package model;
 
-import java.awt.Point;
-
 import logic.Channel;
 import waves.LineUtils;
 
 public class Target {
-	private Point loc;
+	private float x,y;
 	private double targetVal, tolerance;
 	private Level level;
 	private Channel channel;
 	
-	public Target(Level level, String name, Point loc, double targetVal, double tolerance) {
-		this(level,name,loc,targetVal,tolerance,false);
+	public Target(Level level, String name, float x, float y, float targetVal, float tolerance) {
+		this(level,name,x,y,targetVal,tolerance,false);
 	}
 	
-	public Target(Level level, String name, Point loc, double targetVal, double tolerance, boolean isPermanent) {
-		this.loc = loc;
+	public Target(Level level, String name, float x, float y, float targetVal, float tolerance, boolean isPermanent) {
+		this.x = x;
+		this.y = y;
 		this.targetVal = targetVal;
 		this.tolerance = tolerance;
 		this.level = level;
@@ -46,13 +45,15 @@ public class Target {
 					continue;
 				}
 				
-				if(LineUtils.lineIntersectsRectangle(s.getLocation(), loc, o.getRect())) {
+				if(LineUtils.lineIntersectsRectangle(s.getX(),s.getY(), x, y, o.getRect())) {
 					sourceUnobstructed = false;
 				}
 			}
 			
 			if(sourceUnobstructed) {
-				float r = (float) loc.distance(s.getLocation());
+				float dX = s.getX()-x;
+				float dY = s.getY()-y;
+				float r = (float) Math.sqrt(dX*dX + dY*dY);
 				
 				input += (float) s.getWaveEquation().evaluate(t, r);
 			}
@@ -65,7 +66,11 @@ public class Target {
 		channel.update(Math.abs(targetVal-input) < tolerance);
 	}
 	
-	public Point getLocation() {
-		return loc;
+	public float getX() {
+		return x;
+	}
+	
+	public float getY() {
+		return y;
 	}
 }

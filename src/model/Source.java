@@ -1,16 +1,19 @@
 package model;
 
-import java.awt.Point;
-
 import waves.WaveEquation;
 
 public class Source {
-	private Point location;
+	private float x,y;
 	private WaveEquation wE;
 	private boolean active = true;
 	
-	public Source(Point loc, WaveEquation wE) {
-		this.location = loc;
+	public Source(float x, float y, float h, float v) {
+		this(x,y,new WaveEquation(h,v));
+	}
+	
+	public Source(float x, float y, WaveEquation wE) {
+		this.x = x;
+		this.y = y;
 		this.wE = wE;
 	}
 	
@@ -34,11 +37,16 @@ public class Source {
 		return wE;
 	}
 	
-	public void setLocation(Point location) {
-		this.location = location;
+	public void setLocation(float x, float y) {
+		this.x = x;
+		this.y = y;
 	}
 	
-	public Point getLocation() {
-		return location;
+	public float getX() {
+		return x;
+	}
+	
+	public float getY() {
+		return y;
 	}
 }

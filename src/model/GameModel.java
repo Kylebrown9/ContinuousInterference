@@ -1,23 +1,24 @@
 package model;
 
-import java.io.File;
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GameModel {
-	private final float INITIALX=0;
-	private final float INITIALY=0;
-	
 	private final Player player;
 	private final List<Level> levels;
 	
-	public GameModel(List<String> jsonText) {
-		player = new Player(INITIALX,INITIALY,10);
+	public GameModel(Point playerStart, List<String> jsonText) {
+		player = new Player(playerStart.x,playerStart.y,10);
 		levels = new ArrayList<>();
 		
 		for(String text : jsonText) {
 			addLevel(LevelFactory.makeLevel(text));
 		}
+	}
+	
+	public void update(float time) {
+		//TODO: update all model components
 	}
 	
 	public void addLevel(Level l) {

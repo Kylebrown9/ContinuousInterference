@@ -2,8 +2,6 @@ package engine;
 
 import java.awt.Point;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
-import java.io.File;
 import java.util.List;
 
 import interfaces.EngineInterface;
@@ -28,7 +26,7 @@ public class GameEngine extends UpdateThread implements EngineInterface, EventHa
 	}
 
 	public void notifyKeyEvent(KeyEvent ke) {
-		
+		//TODO: implement pickup items event trigger
 	}
 
 	public void notifyClick(float x, float y) {

@@ -14,15 +14,23 @@ public class Level implements LogicListener {
 	private boolean done = false;
 	
 	public Level() {
-		
+		channels = new ChannelSet();
 	}
 	
 	public LevelMap getLevelMap() {
 		return levelMap;
 	}
 	
+	public void addSource(Source s) {
+		sources.add(s);
+	}
+	
 	public List<Source> getSources() {
 		return sources;
+	}
+	
+	public void addTarget(Target t) {
+		targets.add(t);
 	}
 	
 	public List<Target> getTargets() {

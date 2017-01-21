@@ -4,7 +4,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Channel {
-	public enum Type {OR,AND,VALUE,PERMANENT}
+	public enum Type {
+		OR,AND,VALUE,PERMANENT;
+		public static Type fromString(String s) {
+			switch(s.toUpperCase()) {
+			case "OR":
+				return OR;
+			case "AND":
+				return AND;
+			case "PERMANENT":
+				return PERMANENT;
+			case "VALUE":
+			default:
+				return VALUE;
+			}
+		}
+	}
 	
 	private ChannelSet channels;
 	private List<String> sources = new ArrayList<>();

@@ -2,7 +2,11 @@ package model;
 
 import java.awt.Rectangle;
 
-public class Obstacle {
+import logic.LogicListener;
+
+public class Obstacle implements LogicListener {
+	//TODO: Make Obstacles disableable by binding to channels
+	
 	private Rectangle rect;
 	private int id;
 	private boolean active;
@@ -36,5 +40,10 @@ public class Obstacle {
 	
 	public Rectangle getRect() {
 		return rect;
+	}
+
+	@Override
+	public void notify(boolean signal) {
+		setActive(signal);
 	}
 }

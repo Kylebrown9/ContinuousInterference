@@ -18,8 +18,8 @@ public class LevelMap {
 		this.dimensions = d;
 	}
 	
-	public void addObstacles(List<Obstacle> newObstacles) {
-		obstacles.addAll(newObstacles);
+	public void addObstacle(Obstacle obstacle) {
+		obstacles.add(obstacle);
 	}
 	
 	public Dimension getDimensions() {
