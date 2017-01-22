@@ -11,7 +11,6 @@ public class Level implements LogicListener {
 	private Dimension dimensions;
 	private List<Obstacle> obstacles = new ArrayList<>();
 	
-	private LevelMap levelMap;
 	private List<Source> sources;
 	private List<Target> targets;
 
@@ -29,10 +28,6 @@ public class Level implements LogicListener {
 		for(Target t: targets) {
 			t.update(time);
 		}
-	}
-	
-	public LevelMap getLevelMap() {
-		return levelMap;
 	}
 	
 	public void addSource(Source s) {

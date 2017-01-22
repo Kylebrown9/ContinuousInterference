@@ -40,7 +40,7 @@ public class Target {
 				continue;
 			}
 			
-			for(Obstacle o : level.getLevelMap().getObstacles()) {
+			for(Obstacle o : level.getObstacles()) {
 				if(!o.getActive() || o.getPermittive()) {
 					continue;
 				}
