@@ -1,7 +1,6 @@
 package engine;
 
 import java.awt.Point;
-import java.awt.event.KeyEvent;
 import java.util.List;
 
 import interfaces.CompletionListener;

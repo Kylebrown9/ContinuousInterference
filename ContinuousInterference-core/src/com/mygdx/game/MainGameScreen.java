@@ -172,7 +172,7 @@ public class MainGameScreen extends ScreenAdapter {
 		l.addObstacle(new Obstacle(new Rectangle(20, 20, 30, 10), false, 1));
 		l.addObstacle(new Obstacle(new Rectangle(10, 60, 30, 10), true, 2));
 		l.addSource(new Source(50, 60, 5, 10));
-		l.addSource(new Source(10, 10, 9, 10));
+		l.addSource(new Source(10, 10, 2, 10));
 		// l.addTarget(new Target(l, "bojack", 80, 80, -1, 0.04f));
 		gameEngine.getModel().addLevel(l);
 	}
