@@ -1,0 +1,58 @@
+{
+	"width": 1000,
+	"height": 500,
+	
+	"sources": [
+		{
+			"x": 10.0,
+			"y": 30.0,
+			"h": 1.0,
+			"v":  1.0
+		}
+	],
+	
+	"channels": [
+		{
+			"type": "value",
+			"name": "Door1",
+			"dependents": ["Trigger1","Door2B"]
+		},
+		{
+			"type": "value",
+			"name": "Door2A",
+			"dependents": ["Door2B"]
+		},
+		{
+			"type": "and",
+			"name": "Door2B",
+			"dependents": ["Trigger1"]
+		}
+	],
+	
+	"successChannel": "Door2B",
+	
+	"targets": [
+		{
+			"x": 100,
+			"y": 100,
+			
+			"targetVal": 0.5,
+			"tolerance": 0.05,
+			
+			"channel": "Door2B",
+			"isPermanent": true
+		}
+	],
+	
+	"obstacles": [
+		{
+			"x": 1,
+			"y": 2,
+			"width": 3,
+			"height": 4,
+			
+			"permittivity": false,
+			"channel": "Door1"
+		}
+	]
+}
