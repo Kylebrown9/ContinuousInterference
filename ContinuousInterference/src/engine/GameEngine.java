@@ -42,7 +42,11 @@ public class GameEngine extends UpdateThread implements EngineInterface, EventHa
 	}
 
 	public void notifyClick(float x, float y) {
-		player.setTargetPoint(x, y);
+		if (player.isHoldingItem()) {
+			player.pickup();
+		} else {
+			player.drop();
+		}
 	}
 
 	public GameModel getModel() {
@@ -51,5 +55,10 @@ public class GameEngine extends UpdateThread implements EngineInterface, EventHa
 
 	public EventHandler getHandle() {
 		return this;
+	}
+
+	@Override
+	public void notifyMousePos(float x, float y) {
+		player.setTargetPoint(x, y);
 	}
 }

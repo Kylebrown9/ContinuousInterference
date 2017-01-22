@@ -28,6 +28,12 @@ public class ColorUtils {
 		int r, g, b;
 		int i;
 		float f, p, q, t;
+		while (h < 360) {
+			h += 360;
+		}
+		while (h > 360) {
+			h -= 360;
+		}
 		h = (float) Math.max(0.0, Math.min(360.0, h));
 		s = (float) Math.max(0.0, Math.min(100.0, s));
 		v = (float) Math.max(0.0, Math.min(100.0, v));

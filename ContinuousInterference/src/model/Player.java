@@ -24,9 +24,10 @@ public class Player {
 	}
 
 	float lastTime = 0;
-	
+
 	public synchronized void update(float time) {
-		float deltaTime = time-lastTime;
+		float deltaTime = time - lastTime;
+		this.theta = (float) Math.atan2(y - tY, x - tX);
 		float distance = (float) Math.sqrt((x - tX) * (x - tX) + (y - tY) * (y - tY));
 
 		if (distance > TOLERANCE) {
@@ -38,19 +39,26 @@ public class Player {
 		if (heldItem != null) {
 			heldItem.setLocation(x, y);
 		}
-		
+
 		lastTime = time;
 	}
 
 	/**
-	 * @param dy amount to move player, delta x
+	 * @param dy
+	 *            amount to move player, delta x
 	 */
 	private void tryMove(float dx, float dy) {
 		Level curLevel = gM.getCurrentLevel();
 
+		if (curLevel == null) {
+			this.x += dx;
+			this.y += dy;
+			return;
+		}
+
 		for (Obstacle obs : curLevel.getObstacles()) {
 			Rectangle obstacleRect = new Rectangle(obs.getRect());
-			obstacleRect.grow((int)RADIUS, (int)RADIUS);
+			obstacleRect.grow((int) RADIUS * 2 / 3, (int) RADIUS * 2 / 3);
 			if (obstacleRect.contains((int) x + dx, (int) y + dy)) {
 				return;
 			}
@@ -64,7 +72,6 @@ public class Player {
 	public synchronized void setTargetPoint(float x, float y) {
 		this.tX = x;
 		this.tY = y;
-		this.theta = (float) Math.atan2(this.y - y, this.x - x);
 	}
 
 	public synchronized float getX() {
