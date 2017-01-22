@@ -13,8 +13,10 @@ public class GameModel {
 		player = new Player(this,playerStart.x,playerStart.y,10);
 		levels = new ArrayList<>();
 		
+		int offset=0;
 		for(String text : jsonText) {
-			addLevel(LevelFactory.makeLevel(text));
+			addLevel(LevelFactory.makeLevel(text,offset));
+			offset += getLevel(getNumLevels()-1).getDimensions().width;
 		}
 	}
 	
