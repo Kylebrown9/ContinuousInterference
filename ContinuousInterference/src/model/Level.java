@@ -11,8 +11,8 @@ public class Level implements LogicListener {
 	private Dimension dimensions;
 	private List<Obstacle> obstacles = new ArrayList<>();
 	
-	private List<Source> sources;
-	private List<Target> targets;
+	private List<Source> sources = new ArrayList<>();
+	private List<Target> targets = new ArrayList<>();
 
 	private ChannelSet channels;
 	private boolean done = false;
