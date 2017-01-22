@@ -7,9 +7,10 @@ import java.util.List;
 public class GameModel {
 	private final Player player;
 	private final List<Level> levels;
+	private int currentLevel = 0;
 	
 	public GameModel(Point playerStart, List<String> jsonText) {
-		player = new Player(playerStart.x,playerStart.y,10);
+		player = new Player(this,playerStart.x,playerStart.y,10);
 		levels = new ArrayList<>();
 		
 		for(String text : jsonText) {
@@ -18,11 +19,22 @@ public class GameModel {
 	}
 	
 	public void update(float time) {
-		//TODO: update all model components
+		player.update(time);
+		
+		levels.get(currentLevel-1).update(time);
+		levels.get(currentLevel).update(time);
+		
+		if(levels.get(currentLevel).isDone()) {
+			currentLevel++;
+		}
 	}
 	
 	public void addLevel(Level l) {
 		levels.add(l);
+	}
+	
+	public Level getCurrentLevel() {
+		return levels.get(currentLevel);
 	}
 	
 	public Level getLevel(int i) {

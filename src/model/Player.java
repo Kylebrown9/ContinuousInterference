@@ -2,14 +2,17 @@ package model;
 
 public class Player {
 	private static final float TOLERANCE = 10;
+	private static final float PICKUP_RANGE = 100;
 	
+	private GameModel gM;
 	private float x,y;
 	private float tX, tY;
 	private float theta = 0;
 	private final float speed;
 	private Source heldItem = null;
 	
-	public Player(float initX, float initY, float speed) {
+	public Player(GameModel gM, float initX, float initY, float speed) {
+		this.gM = gM;
 		this.x = initX;
 		this.y = initY;
 		this.speed = speed;
@@ -22,6 +25,8 @@ public class Player {
 			x += time*speed*Math.sin(theta);
 			y += time*speed*Math.cos(theta);
 		} 
+		
+		//TODO: collision detection
 	}
 
 	public synchronized void setTargetPoint(float x, float y) {
@@ -38,21 +43,44 @@ public class Player {
 		return y;
 	}
 	
-	//Item system
-	public synchronized boolean pickupItem(Source source) {
-		if(heldItem == null) {
-			return false;
-		} else {
-			heldItem = source;
-			return true;
+	public synchronized void pickup() {
+		float dX, dY;
+		for(Source s: gM.getCurrentLevel().getSources()) {
+			dX = s.getX()-x;
+			dY = s.getY()-y;
+			if(Math.sqrt(dX*dX + dY*dY) < PICKUP_RANGE) {
+				pickupItem(s);
+				return;
+			}
 		}
+	}
+	
+	public synchronized void drop() {
+		dropItem();
+	}
+	
+	private boolean pickupItem(Source source) {
+		if(heldItem != null) {
+			drop();
+		}
+		
+		heldItem = source;
+		heldItem.setActive(false);
+		return true;
+	}
+	
+	private void dropItem() {
+		if(heldItem == null) {
+			return;
+		}
+		
+		heldItem.setActive(true);
+		heldItem.setLocation(x, y);
+		
+		heldItem = null;
 	}
 	
 	public synchronized boolean isHoldingItem() {
 		return heldItem == null;
-	}
-	
-	public synchronized Source getHeldItem() {
-		return heldItem;
 	}
 }

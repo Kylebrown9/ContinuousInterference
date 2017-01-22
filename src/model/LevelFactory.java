@@ -2,47 +2,56 @@ package model;
 
 import java.awt.Rectangle;
 
+import com.google.gson.Gson;
+
 import logic.Channel;
 import logic.ChannelSet;
 
 public class LevelFactory {
 	public static Level makeLevel(String jsonText) {
-		Level level = new Level();
-		//TODO: Implement level creation from json text
+		Gson g = new Gson();
+		LevelDescriptor lD = g.fromJson(jsonText, LevelDescriptor.class);
 		
-		LevelDescriptor lD = ;
+		Level level = new Level(lD.width,lD.height);
 		
-		for(SourceDesc s: lD.sourceDescs) {
+		for(SourceDesc s: lD.sources) {
 			level.addSource(new Source(s.x,s.y,s.h,s.v));
 		}
 		
-		for(TargetDesc t: lD.targetDescs) {
+		for(TargetDesc t: lD.targets) {
 			level.addTarget(new Target(level,t.name,t.x,t.y,t.targetVal,t.tolerance,t.isPermanent));
 		}
 		
 		ChannelSet channels = level.getChannels();
 		Channel channel;
-		for(ChannelDesc c: lD.channelDescs) {
+		for(ChannelDesc c: lD.channels) {
 			channel = channels.makeChannel(c.name, Channel.Type.fromString(c.type));
+			for(String dependentId: c.dependentIds) {
+				channel.addDependent(dependentId);
+			}
 		}
 		
-		for(ObstacleDesc o: lD.obsctacleDescs) {
+		for(ObstacleDesc o: lD.obsctacles) {
 			Obstacle obstacle = new Obstacle(new Rectangle(o.x,o.y,o.width,o.height),o.permittivity);
-			level.getLevelMap().addObstacle(obstacle);
+			level.addObstacle(obstacle);
 			if(!o.channel.equals("null")) {
 				channels.get(o.channel).setListener(obstacle);	
 			}
 		}
 		
+		channels.get(lD.succesChannel).setListener(level);
+		
 		return level;
 	}
 	
 	class LevelDescriptor {
-		public SourceDesc[] sourceDescs;
-		public TargetDesc[] targetDescs;
-		public ChannelDesc[] channelDescs;
-		public ObstacleDesc[] obsctacleDescs;
+		public SourceDesc[] sources;
+		public TargetDesc[] targets;
+		public ChannelDesc[] channels;
+		public ObstacleDesc[] obsctacles;
 		public String succesChannel;
+		
+		public int width,height;
 	}
 	
 	class SourceDesc {

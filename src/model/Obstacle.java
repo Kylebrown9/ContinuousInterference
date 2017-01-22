@@ -5,8 +5,6 @@ import java.awt.Rectangle;
 import logic.LogicListener;
 
 public class Obstacle implements LogicListener {
-	//TODO: Make Obstacles disableable by binding to channels
-	
 	private Rectangle rect;
 	private int id;
 	private boolean active;

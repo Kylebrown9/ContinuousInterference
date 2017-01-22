@@ -26,7 +26,13 @@ public class GameEngine extends UpdateThread implements EngineInterface, EventHa
 	}
 
 	public void notifyKeyEvent(KeyEvent ke) {
-		//TODO: implement pickup items event trigger
+		if(ke.getKeyCode() == KeyEvent.VK_SPACE) {
+			if(player.isHoldingItem()) {
+				player.pickup();
+			} else {
+				player.drop();
+			}
+		}
 	}
 
 	public void notifyClick(float x, float y) {
