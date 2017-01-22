@@ -42,6 +42,6 @@ public class Obstacle implements LogicListener {
 
 	@Override
 	public void notify(boolean signal) {
-		setActive(signal);
+		setActive(!signal);
 	}
 }

@@ -16,10 +16,13 @@ public class ChannelLinkTest extends Test {
 	public boolean orTest() {
 		ChannelSet channels = new ChannelSet();
 		
-		Channel cA = channels.makeChannel("A",Channel.Type.VALUE);
-		Channel cB = channels.makeChannel("B",Channel.Type.VALUE);
+//		Channel cA = channels.makeChannel("A",Channel.Type.VALUE);
+//		Channel cB = channels.makeChannel("B",Channel.Type.VALUE);
 		
 		Channel cOr = channels.makeChannel("OR",new String[]{"A","B"},Channel.Type.OR);
+		
+		Channel cA = channels.makeChannel("A",Channel.Type.VALUE);
+		Channel cB = channels.makeChannel("B",Channel.Type.VALUE);
 		
 		BoolStore p = new BoolStore();
 		cOr.setListener(p);

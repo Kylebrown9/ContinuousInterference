@@ -12,7 +12,7 @@ public class ChannelSet {
 	public ChannelSet() {}
 	
 	public Channel makeChannel(String name, Channel.Type type) {
-		return makeChannel(name,null,type);
+		return makeChannel(name,new String[0],type);
 	}
 	
 	public synchronized Channel makeChannel(String name, String[] sources, Channel.Type type) {
@@ -21,16 +21,7 @@ public class ChannelSet {
 		
 		Channel sourceChannel;
 		
-		if(pendingBindings.get(name) != null) {
-			for(String binding: pendingBindings.get(name)) {
-				newChannel.addDependent(binding);
-			}
-			pendingBindings.get(name).clear();
-		}
-		
-		if(sources == null)
-			return newChannel;
-		
+		if(sources != null)
 		for(String sourceName: sources) {
 			newChannel.addSource(sourceName);
 			
@@ -49,7 +40,12 @@ public class ChannelSet {
 			}
 		}
 		
-		
+		if(pendingBindings.get(name) != null) {
+			for(String binding: pendingBindings.get(name)) {
+				newChannel.addDependent(binding);
+			}
+			pendingBindings.get(name).clear();
+		}
 		
 		return newChannel;
 	}

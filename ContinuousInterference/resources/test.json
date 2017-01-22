@@ -11,24 +11,6 @@
 		}
 	],
 	
-	"channels": [
-		{
-			"type": "value",
-			"name": "Door1",
-			"dependents": ["Trigger1","Door2B"]
-		},
-		{
-			"type": "value",
-			"name": "Door2A",
-			"dependents": ["Door2B"]
-		},
-		{
-			"type": "and",
-			"name": "Door2B",
-			"dependents": ["Trigger1"]
-		}
-	],
-	
 	"targets": [
 		{
 			"x": 100,
@@ -37,10 +19,34 @@
 			"targetVal": 0.5,
 			"tolerance": 0.05,
 			
-			"channel": "Door2B",
+			"channel": "target1",
+			"isPermanent": true
+		},
+		{
+			"x": 100,
+			"y": 100,
+			
+			"targetVal": 0.5,
+			"tolerance": 0.05,
+			
+			"channel": "target2",
 			"isPermanent": true
 		}
 	],
+	
+	"channels": [
+		{
+			"type": "and",
+			"name": "Door2",
+			"inputs": ["target2","Door1"]
+		},
+		{
+			"type": "and",
+			"name": "Door1",
+			"inputs": ["target1"]
+		}
+	],
+	
 	
 	"obstacles": [
 		{
@@ -51,6 +57,15 @@
 			
 			"permittivity": false,
 			"channel": "Door1"
+		},
+		{
+			"x": 10,
+			"y": 2,
+			"width": 3,
+			"height": 4,
+			
+			"permittivity": false,
+			"channel": "Door2"
 		}
 	]
 }
