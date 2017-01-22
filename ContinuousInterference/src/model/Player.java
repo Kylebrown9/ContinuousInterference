@@ -31,8 +31,10 @@ public class Player {
 		float distance = (float) Math.sqrt((x - tX) * (x - tX) + (y - tY) * (y - tY));
 
 		if (distance > TOLERANCE) {
-			float xMove = (float) (deltaTime * speed * Math.sin(theta - Math.PI / 2));
-			float yMove = (float) (deltaTime * speed * Math.cos(theta + Math.PI / 2));
+			float moveDistance = deltaTime * speed;
+			moveDistance = Math.min(distance, moveDistance);
+			float xMove = (float) (moveDistance * Math.sin(theta - Math.PI / 2));
+			float yMove = (float) (moveDistance * Math.cos(theta + Math.PI / 2));
 			tryMove(xMove, yMove);
 		}
 
