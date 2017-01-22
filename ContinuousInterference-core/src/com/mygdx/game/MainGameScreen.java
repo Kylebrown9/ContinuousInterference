@@ -332,7 +332,7 @@ public class MainGameScreen extends ScreenAdapter {
 
 		// Targets
 		for (Target t : getAllTargets()) {
-			shapeRenderer.setColor(ColorUtils.HSV_to_RGB((float) (worldHue), s((float) t.getTargetVal()), 100));
+			shapeRenderer.setColor(ColorUtils.HSV_to_RGB((float) (worldHue), 50, s((float) t.getTargetVal())));
 			shapeRenderer.circle(t.getX(), t.getY(), 3, 25);
 		}
 
