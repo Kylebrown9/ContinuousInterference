@@ -1,9 +1,9 @@
 package model;
 
 public class Player {
-	private static final float RADIUS = 20;
-	private static final float TOLERANCE = 10;
-	private static final float PICKUP_RANGE = 100;
+	public static final float RADIUS = 20;
+	public static final float TOLERANCE = 10;
+	public static final float PICKUP_RANGE = 100;
 	
 	private GameModel gM;
 	private float x,y;
