@@ -75,6 +75,8 @@ public class MainGameScreen extends ScreenAdapter {
 	 */
 	private GameEngine gameEngine;
 
+	private float sourceAmplitude = 100F;
+
 	public MainGameScreen(MyGame g) {
 		// All the mundane initializations
 		game = g;
@@ -289,7 +291,7 @@ public class MainGameScreen extends ScreenAdapter {
 
 						float valueAtPoint = source.getWaveEquation().evaluate(currTime, dist);
 						valueAtPoint = valueAtPoint / 2 + 0.5f;
-						sumAtPoint += valueAtPoint * 100f;
+						sumAtPoint += valueAtPoint * sourceAmplitude;
 					}
 				}
 
@@ -315,23 +317,23 @@ public class MainGameScreen extends ScreenAdapter {
 		shapeRenderer.begin(ShapeType.Filled);
 		shapeRenderer.setColor(Color.FIREBRICK);
 		shapeRenderer.circle((float) gameEngine.getModel().getPlayer().getX(),
-				(float) gameEngine.getModel().getPlayer().getY(), Player.RADIUS);
+				(float) gameEngine.getModel().getPlayer().getY(), Player.RADIUS, 100);
 		// System.out.println(gameEngine.getModel().getPlayer().getX() + ":" +
 		// gameEngine.getModel().getPlayer().getY());
 
 		// Sources
 		for (Source s : getAllSources()) {
 			if (s.isActive()) {
-				shapeRenderer
-						.setColor(ColorUtils.HSV_to_RGB(30 + 60 * s.getWaveEquation().evaluate(currTime, 0), 100, 100));
-				shapeRenderer.rect(s.getX() - 2, s.getY() - 2, 5, 5);
+				shapeRenderer.setColor(ColorUtils.HSV_to_RGB(worldHue,
+						50, sourceAmplitude * s.getWaveEquation().evaluate(currTime, 0)));
+				shapeRenderer.circle(s.getX(), s.getY(), Player.RADIUS/2, 100);
 			}
 		}
 
 		// Targets
 		for (Target t : getAllTargets()) {
 			shapeRenderer.setColor(ColorUtils.HSV_to_RGB((float) (30 + 60 * t.getTargetVal()), 100, 100));
-			shapeRenderer.rect(t.getX() - 2, t.getY() - 2, 5, 5);
+			shapeRenderer.circle(t.getX(), t.getY(), 3, 25);
 		}
 
 		// Doors around every level
@@ -369,9 +371,10 @@ public class MainGameScreen extends ScreenAdapter {
 		wavePix.dispose();
 		waveTexture.dispose();
 	}
-
-	private Color bgStart = ColorUtils.HSV_to_RGB(worldHue, 50, 0);
-	private Color bgEnd = ColorUtils.HSV_to_RGB(worldHue, 50, 100);
+	
+	private static float n(float num) {
+		return num;
+	}
 
 	/**
 	 * Returns the background color of the level, a linear gradient, at this x
@@ -380,6 +383,9 @@ public class MainGameScreen extends ScreenAdapter {
 	 * @return
 	 */
 	private Color getBackgroundAtX(float x) {
+		Color bgStart = ColorUtils.HSV_to_RGB(worldHue, 50, 0);
+		Color bgEnd = ColorUtils.HSV_to_RGB(worldHue, 50, 100);
+
 		// Width of all levels
 		float worldWidth = 0;
 		for (int i = 0; i < gameEngine.getModel().getNumLevels(); i++) {
