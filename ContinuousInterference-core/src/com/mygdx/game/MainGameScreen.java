@@ -310,7 +310,7 @@ public class MainGameScreen extends ScreenAdapter {
 
 		// Wave Plane
 		batch.begin();
-		batch.draw(waveTexture, cameraXOffset, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
+		batch.draw(waveTexture, cameraXOffset, 0.5f, viewport.getWorldWidth(), viewport.getWorldHeight());
 		batch.end();
 
 		// Player
@@ -324,15 +324,15 @@ public class MainGameScreen extends ScreenAdapter {
 		// Sources
 		for (Source s : getAllSources()) {
 			if (s.isActive()) {
-				shapeRenderer.setColor(ColorUtils.HSV_to_RGB(worldHue,
-						50, sourceAmplitude * s.getWaveEquation().evaluate(currTime, 0)));
-				shapeRenderer.circle(s.getX(), s.getY(), Player.RADIUS/2, 100);
+				shapeRenderer.setColor(ColorUtils.HSV_to_RGB(worldHue, 50,
+						sourceAmplitude * s(s.getWaveEquation().evaluate(currTime, 0))));
+				shapeRenderer.circle(s.getX(), s.getY(), Player.RADIUS / 2, 100);
 			}
 		}
 
 		// Targets
 		for (Target t : getAllTargets()) {
-			shapeRenderer.setColor(ColorUtils.HSV_to_RGB((float) (30 + 60 * t.getTargetVal()), 100, 100));
+			shapeRenderer.setColor(ColorUtils.HSV_to_RGB((float) (worldHue, 50, 100));
 			shapeRenderer.circle(t.getX(), t.getY(), 3, 25);
 		}
 
@@ -371,9 +371,15 @@ public class MainGameScreen extends ScreenAdapter {
 		wavePix.dispose();
 		waveTexture.dispose();
 	}
-	
-	private static float n(float num) {
-		return num;
+
+	/**
+	 * Scales input in range 1 to -1 ==> 1 to 0.
+	 * 
+	 * @param num
+	 * @return
+	 */
+	private static float s(float num) {
+		return num * 2 + 0.5f;
 	}
 
 	/**
