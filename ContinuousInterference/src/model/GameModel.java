@@ -10,6 +10,7 @@ public class GameModel {
 	private final Player player;
 	private final List<Level> levels;
 	private final CompletionListener cL;
+	private final int gameWidth;
 	
 	public GameModel(Point playerStart, List<String> jsonText, CompletionListener cL) {
 		player = new Player(this,playerStart.x,playerStart.y,10);
@@ -21,6 +22,7 @@ public class GameModel {
 			addLevel(LevelFactory.makeLevel(text,offset));
 			offset += getLevel(getNumLevels()-1).getDimensions().width;
 		}
+		gameWidth = offset;
 	}
 	
 	public int getCurrentLevelIndex() {
@@ -64,6 +66,10 @@ public class GameModel {
 		
 		for(Level l : getActiveLevels()) {
 			l.update(time);
+		}
+		
+		if(player.getX() > gameWidth) {
+			cL.notifyCompleted();
 		}
 	}
 	
