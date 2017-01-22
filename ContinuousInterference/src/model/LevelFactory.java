@@ -8,6 +8,8 @@ import logic.Channel;
 import logic.ChannelSet;
 
 public class LevelFactory {
+	private static final int PADDING = 1000;
+	
 	public static Level makeLevel(String jsonText, int offset) {
 		Gson g = new Gson();
 		LevelDescriptor lD = g.fromJson(jsonText, LevelDescriptor.class);
@@ -38,6 +40,9 @@ public class LevelFactory {
 				channels.get(o.channel).setListener(obstacle);	
 			}
 		}
+		
+		level.addObstacle(new Obstacle(new Rectangle(offset,-PADDING,lD.width,PADDING),false));
+		level.addObstacle(new Obstacle(new Rectangle(offset,lD.height,lD.width,PADDING),false));
 		
 		return level;
 	}
