@@ -222,7 +222,7 @@ public class MainGameScreen extends ScreenAdapter {
 		currTime += delta;
 
 		// Update game engine
-		gameEngine.update(delta);
+		gameEngine.update();
 
 		// Reposition camera
 		// cameraXOffset += delta;
