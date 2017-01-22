@@ -4,14 +4,17 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
+import interfaces.CompletionListener;
+
 public class GameModel {
 	private final Player player;
 	private final List<Level> levels;
-	private int currentLevel = 0;
+	private final CompletionListener cL;
 	
-	public GameModel(Point playerStart, List<String> jsonText) {
+	public GameModel(Point playerStart, List<String> jsonText, CompletionListener cL) {
 		player = new Player(this,playerStart.x,playerStart.y,10);
 		levels = new ArrayList<>();
+		this.cL = cL;
 		
 		int offset=0;
 		for(String text : jsonText) {
@@ -32,7 +35,7 @@ public class GameModel {
 	
 	public List<Level> getActiveLevels() {
 		List<Level> activeLevels = new ArrayList<>();
-		currentLevel = getCurrentLevelIndex();
+		int currentLevel = getCurrentLevelIndex();
 		
 		if(levels.get(currentLevel-1) != null)
 			activeLevels.add(levels.get(currentLevel-1));

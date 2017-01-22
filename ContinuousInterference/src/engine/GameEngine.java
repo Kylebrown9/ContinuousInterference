@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.util.List;
 
+import interfaces.CompletionListener;
 import interfaces.EngineInterface;
 import interfaces.EventHandler;
 import interfaces.TimeProvider;
@@ -15,8 +16,8 @@ public class GameEngine extends UpdateThread implements EngineInterface, EventHa
 	private TimeProvider tProv;
 	private Player player;
 	
-	public GameEngine(Point start, List<String> fileContents, TimeProvider tProv) {
-		model = new GameModel(start,fileContents);
+	public GameEngine(Point start, List<String> fileContents, TimeProvider tProv, CompletionListener cL) {
+		model = new GameModel(start,fileContents,cL);
 		player = model.getPlayer();
 		this.tProv = tProv;
 	}
