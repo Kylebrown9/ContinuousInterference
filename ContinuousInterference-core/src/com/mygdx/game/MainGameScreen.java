@@ -5,9 +5,12 @@ import java.awt.Rectangle;
 import java.awt.geom.Line2D;
 import java.util.LinkedList;
 
+import javax.swing.JOptionPane;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
@@ -35,16 +38,22 @@ import model.Target;
 
 public class MainGameScreen extends ScreenAdapter {
 
+	private float worldHue = 180;
+
 	/**
 	 * "Logical" viewport size units.
 	 */
 	public static final float VP_WIDTH = 160;
 	public static final float VP_HEIGHT = 90;
 
-	private static final float WAVES_WIDTH = 160;
-	private static final float WAVES_HEIGHT = WAVES_WIDTH
-			* ((float) Gdx.graphics.getHeight() / Gdx.graphics.getWidth());
-	private static final float WAVES_COORD_SCALE = VP_HEIGHT / WAVES_HEIGHT;
+	private float wavesWidth = 160;
+	private float wavesHeight = wavesWidth * (VP_WIDTH / VP_HEIGHT);
+	private float wavesCoordScale = VP_HEIGHT / wavesHeight;
+
+	private void setWavesTextureSize(float wavesWidth) {
+		wavesHeight = wavesWidth * (VP_WIDTH / VP_HEIGHT);
+		wavesCoordScale = VP_HEIGHT / wavesHeight;
+	}
 
 	private MyGame game;
 	private SpriteBatch batch;
@@ -91,7 +100,10 @@ public class MainGameScreen extends ScreenAdapter {
 
 		// Initialize game engine
 		// TODO: Load games levels
+		FileHandle file = Gdx.files.internal("testLevel.json");
+		String testLevelText = file.readString();
 		LinkedList<String> levels = new LinkedList<String>();
+		levels.add(testLevelText);
 		gameEngine = new GameEngine(new Point(5, 5), levels, new TimeProvider() {
 
 			@Override
@@ -100,14 +112,13 @@ public class MainGameScreen extends ScreenAdapter {
 			}
 
 		}, new CompletionListener() {
-			
+
 			@Override
 			public void notifyCompleted() {
-				// TODO Auto-generated method stub
-				/// ???
+				System.out.println("COMPLETED!");
 			}
 		});
-		addDebugLevels();
+		// addDebugLevels();
 		// gameEngine.start();
 
 		// Get game engine input events
@@ -115,13 +126,7 @@ public class MainGameScreen extends ScreenAdapter {
 
 			@Override
 			public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-				// Translate between screen pixels and click position
-				camera.unproject(mousePos.set(screenX, screenY, 0));
-				// Just left-right with movement of camera
-				mousePos.x += cameraXOffset;
-				System.out.println(mousePos);
-				gameEngine.notifyClick(mousePos.x, mousePos.y);
-				return true;
+				return false;
 			}
 
 			@Override
@@ -131,7 +136,13 @@ public class MainGameScreen extends ScreenAdapter {
 
 			@Override
 			public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-				return false;
+				// Translate between screen pixels and click position
+				camera.unproject(mousePos.set(screenX, screenY, 0));
+				// Just left-right with movement of camera
+				mousePos.x += cameraXOffset;
+				// System.out.println(mousePos);
+				gameEngine.notifyClick(mousePos.x, mousePos.y);
+				return true;
 			}
 
 			@Override
@@ -142,7 +153,13 @@ public class MainGameScreen extends ScreenAdapter {
 
 			@Override
 			public boolean mouseMoved(int screenX, int screenY) {
-				return false;
+				// Translate between screen pixels and click position
+				camera.unproject(mousePos.set(screenX, screenY, 0));
+				// Just left-right with movement of camera
+				mousePos.x += cameraXOffset;
+				// System.out.println(mousePos);
+				gameEngine.notifyMousePos(mousePos.x, mousePos.y);
+				return true;
 			}
 
 			@Override
@@ -162,6 +179,7 @@ public class MainGameScreen extends ScreenAdapter {
 			}
 		});
 
+		setWavesTextureSize(Integer.parseInt(JOptionPane.showInputDialog("What is your worth?")));
 	}
 
 	/**
@@ -173,7 +191,7 @@ public class MainGameScreen extends ScreenAdapter {
 		l.addObstacle(new Obstacle(new Rectangle(10, 60, 30, 10), true, 2));
 		l.addSource(new Source(50, 60, 5, 10));
 		l.addSource(new Source(10, 10, 2, 10));
-		// l.addTarget(new Target(l, "bojack", 80, 80, -1, 0.04f));
+		l.addTarget(new Target(l, "bojack", 80, 80, -1, 0.04f));
 		gameEngine.getModel().addLevel(l);
 	}
 
@@ -215,6 +233,8 @@ public class MainGameScreen extends ScreenAdapter {
 
 	@Override
 	public void render(float delta) {
+		worldHue += delta * 3;
+
 		// Keep FPS log
 		fps.log();
 
@@ -222,7 +242,7 @@ public class MainGameScreen extends ScreenAdapter {
 		currTime += delta;
 
 		// Update game engine
-		gameEngine.update(delta);
+		gameEngine.update();
 
 		// Reposition camera
 		// cameraXOffset += delta;
@@ -241,12 +261,12 @@ public class MainGameScreen extends ScreenAdapter {
 		// Over the entire viewport, calculate the summed effects of every
 		// source on the map
 		// TODO: Optimize. Write to byte array, then PixMap, etc.
-		int wavesWidth = (int) (WAVES_HEIGHT * (VP_WIDTH / VP_HEIGHT));
-		Pixmap wavePix = new Pixmap(wavesWidth, (int) WAVES_HEIGHT, Format.RGBA8888);
+		int wavesWidth = (int) (wavesHeight * (VP_WIDTH / VP_HEIGHT));
+		Pixmap wavePix = new Pixmap(wavesWidth, (int) wavesHeight, Format.RGBA8888);
 		for (int x = 0; x < wavesWidth; x++) {
-			for (int y = 0; y < WAVES_HEIGHT; y++) {
-				float xWorld = x * WAVES_COORD_SCALE + cameraXOffset;
-				float yWorld = VP_HEIGHT - y * WAVES_COORD_SCALE;
+			for (int y = 0; y < wavesHeight; y++) {
+				float xWorld = x * wavesCoordScale + cameraXOffset;
+				float yWorld = VP_HEIGHT - y * wavesCoordScale;
 
 				float sumAtPoint = 30;
 				sourceLoop: for (Source source : getAllSources()) {
@@ -268,11 +288,12 @@ public class MainGameScreen extends ScreenAdapter {
 						float dist = (float) Math.sqrt(dx * dx + dy * dy);
 
 						float valueAtPoint = source.getWaveEquation().evaluate(currTime, dist);
-						sumAtPoint += valueAtPoint * 60f;
+						valueAtPoint = valueAtPoint / 2 + 0.5f;
+						sumAtPoint += valueAtPoint * 100f;
 					}
 				}
 
-				wavePix.drawPixel(x, y, Color.rgba8888((ColorUtils.HSV_to_RGB(sumAtPoint, 50, 100))));
+				wavePix.drawPixel(x, y, Color.rgba8888((ColorUtils.HSV_to_RGB(worldHue, 50, sumAtPoint))));
 			}
 		}
 
@@ -318,7 +339,7 @@ public class MainGameScreen extends ScreenAdapter {
 		for (int x = 0; x < doorPixmap.getWidth(); x++) {
 			for (int y = 0; y < doorPixmap.getHeight(); y++) {
 				doorPixmap.drawPixel(x, y,
-						Color.rgba8888(ColorUtils.HSV_to_RGB(240, MathUtils.random(100), MathUtils.random(100))));
+						Color.rgba8888(ColorUtils.HSV_to_RGB(worldHue, MathUtils.random(100), MathUtils.random(100))));
 			}
 		}
 		Texture doorTexture = new Texture(doorPixmap);
@@ -332,8 +353,13 @@ public class MainGameScreen extends ScreenAdapter {
 
 		// Obstacles
 		for (Obstacle o : getAllObstacles()) {
-			shapeRenderer.rect(o.getRect().x, o.getRect().y, o.getRect().width, o.getRect().height, Color.RED,
-					Color.YELLOW, Color.GREEN, Color.BLUE);
+			if (o.getActive()) {
+				shapeRenderer.rect(o.getRect().x, o.getRect().y, o.getRect().width, o.getRect().height,
+						getBackgroundAtX(o.getRect().x),
+						getBackgroundAtX((float) (o.getRect().x + o.getRect().getWidth())),
+						getBackgroundAtX((float) (o.getRect().x + o.getRect().getWidth())),
+						getBackgroundAtX(o.getRect().x));
+			}
 		}
 
 		// Finalize
@@ -342,6 +368,26 @@ public class MainGameScreen extends ScreenAdapter {
 		// Dispose of disposable things
 		wavePix.dispose();
 		waveTexture.dispose();
+	}
+
+	private Color bgStart = ColorUtils.HSV_to_RGB(worldHue, 50, 0);
+	private Color bgEnd = ColorUtils.HSV_to_RGB(worldHue, 50, 100);
+
+	/**
+	 * Returns the background color of the level, a linear gradient, at this x
+	 * 
+	 * @param x
+	 * @return
+	 */
+	private Color getBackgroundAtX(float x) {
+		// Width of all levels
+		float worldWidth = 0;
+		for (int i = 0; i < gameEngine.getModel().getNumLevels(); i++) {
+			worldWidth += 80;
+		}
+		Color resultColor = new Color(bgStart);
+		resultColor.lerp(bgEnd, x / worldWidth);
+		return resultColor;
 	}
 
 	@Override

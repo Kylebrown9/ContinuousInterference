@@ -1,6 +1,6 @@
 {
-	"width": 1000,
-	"height": 500,
+	"width": 80,
+	"height": 90,
 	
 	"sources": [
 		{
@@ -13,21 +13,21 @@
 	
 	"targets": [
 		{
-			"x": 100,
-			"y": 100,
+			"x": 50,
+			"y": 50,
 			
-			"targetVal": 0.5,
-			"tolerance": 0.05,
+			"targetVal": -1,
+			"tolerance": 0.5,
 			
 			"channel": "target1",
 			"isPermanent": true
 		},
 		{
-			"x": 100,
-			"y": 100,
+			"x": 10,
+			"y": 10,
 			
-			"targetVal": 0.5,
-			"tolerance": 0.05,
+			"targetVal": -1,
+			"tolerance": 0.5,
 			
 			"channel": "target2",
 			"isPermanent": true
@@ -38,30 +38,30 @@
 		{
 			"type": "and",
 			"name": "Door2",
-			"inputs": ["target2","Door1"]
+			"inputIds": ["target2","Door1"]
 		},
 		{
 			"type": "and",
 			"name": "Door1",
-			"inputs": ["target1"]
+			"inputIds": ["target1"]
 		}
 	],
 	
 	
 	"obstacles": [
 		{
-			"x": 1,
-			"y": 2,
-			"width": 3,
+			"x": 15,
+			"y": 20,
+			"width": 60,
 			"height": 4,
 			
 			"permittivity": false,
 			"channel": "Door1"
 		},
 		{
-			"x": 10,
-			"y": 2,
-			"width": 3,
+			"x": 60,
+			"y": 70,
+			"width": 10,
 			"height": 4,
 			
 			"permittivity": false,
