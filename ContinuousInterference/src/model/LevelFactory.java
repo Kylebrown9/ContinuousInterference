@@ -25,12 +25,8 @@ public class LevelFactory {
 		}
 		
 		ChannelSet channels = level.getChannels();
-		Channel channel;
 		for(ChannelDesc c: lD.channels) {
-			channel = channels.makeChannel(c.name, Channel.Type.fromString(c.type));
-			for(String dependentId: c.dependentIds) {
-				channel.addDependent(dependentId);
-			}
+			channels.makeChannel(c.name,c.inputIds,Channel.Type.fromString(c.type));
 		}
 		
 		for(ObstacleDesc o: lD.obsctacles) {
@@ -68,7 +64,7 @@ public class LevelFactory {
 	
 	class ChannelDesc {
 		public String type,name;
-		public String[] dependentIds;
+		public String[] inputIds;
 	}
 	
 	class ObstacleDesc {

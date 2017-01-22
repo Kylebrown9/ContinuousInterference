@@ -4,34 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Channel {
-	public enum Type {
-		OR,AND,VALUE,PERMANENT,INVERTER;
-		public static Type fromString(String s) {
-			switch(s.toUpperCase()) {
-			case "OR":
-				return OR;
-			case "AND":
-				return AND;
-			case "INVERTER":
-				return INVERTER;
-			case "PERMANENT":
-				return PERMANENT;
-			case "VALUE":
-			default:
-				return VALUE;
-			}
-		}
-	}
-	
 	private ChannelSet channels;
 	private List<String> sources = new ArrayList<>();
 	private List<String> dependents = new ArrayList<>();
+	
 	private Type type;
 	private LogicListener listener = null;
-	
 	private boolean output = false;
 	
-	public Channel(ChannelSet channels, String name, Type type) {
+	public Channel(ChannelSet channels, Type type) {
 		this.type = type;
 		this.channels = channels;
 	}
@@ -106,6 +87,26 @@ public class Channel {
 	private void updateDependents() {
 		for(String name : dependents) {
 			channels.get(name).update();
+		}
+	}
+	
+	public enum Type {
+		OR,AND,VALUE,PERMANENT,INVERTER;
+		
+		public static Type fromString(String s) {
+			switch(s.toUpperCase()) {
+			case "OR":
+				return OR;
+			case "AND":
+				return AND;
+			case "INVERTER":
+				return INVERTER;
+			case "PERMANENT":
+				return PERMANENT;
+			case "VALUE":
+			default:
+				return VALUE;
+			}
 		}
 	}
 }
