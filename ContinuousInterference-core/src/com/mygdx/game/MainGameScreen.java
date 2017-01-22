@@ -25,9 +25,11 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import engine.GameEngine;
+import interfaces.CompletionListener;
 import interfaces.TimeProvider;
 import model.Level;
 import model.Obstacle;
+import model.Player;
 import model.Source;
 import model.Target;
 
@@ -97,6 +99,13 @@ public class MainGameScreen extends ScreenAdapter {
 				return currTime;
 			}
 
+		}, new CompletionListener() {
+			
+			@Override
+			public void notifyCompleted() {
+				// TODO Auto-generated method stub
+				/// ???
+			}
 		});
 		addDebugLevels();
 		// gameEngine.start();
@@ -159,7 +168,7 @@ public class MainGameScreen extends ScreenAdapter {
 	 * Generates a couple of levels for the game.
 	 */
 	private void addDebugLevels() {
-		Level l = new Level(80, 90);
+		Level l = new Level(80, 90, 0);
 		l.addObstacle(new Obstacle(new Rectangle(20, 20, 30, 10), false, 1));
 		l.addObstacle(new Obstacle(new Rectangle(10, 60, 30, 10), true, 2));
 		l.addSource(new Source(50, 60, 5, 10));
@@ -285,7 +294,7 @@ public class MainGameScreen extends ScreenAdapter {
 		shapeRenderer.begin(ShapeType.Filled);
 		shapeRenderer.setColor(Color.FIREBRICK);
 		shapeRenderer.circle((float) gameEngine.getModel().getPlayer().getX(),
-				(float) gameEngine.getModel().getPlayer().getY(), 5f);
+				(float) gameEngine.getModel().getPlayer().getY(), Player.RADIUS);
 		// System.out.println(gameEngine.getModel().getPlayer().getX() + ":" +
 		// gameEngine.getModel().getPlayer().getY());
 

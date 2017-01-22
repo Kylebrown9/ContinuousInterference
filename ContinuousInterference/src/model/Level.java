@@ -12,14 +12,8 @@ public class Level implements LogicListener {
 	private Dimension dimensions;
 	private List<Obstacle> obstacles = new ArrayList<>();
 	
-<<<<<<< HEAD
-	private List<Source> sources;
-	private List<Target> targets;
-=======
-	private LevelMap levelMap;
 	private List<Source> sources = new ArrayList<>();
 	private List<Target> targets = new ArrayList<>();
->>>>>>> cdb63bf... Added: game
 
 	private ChannelSet channels;
 	private boolean done = false;
@@ -37,14 +31,6 @@ public class Level implements LogicListener {
 		}
 	}
 	
-<<<<<<< HEAD
-=======
-	public LevelMap getLevelMap() {
-		//return levelMap;
-		return new LevelMap(getDimensions(), getObstacles());
-	}
-	
->>>>>>> cdb63bf... Added: game
 	public void addSource(Source s) {
 		sources.add(s);
 	}

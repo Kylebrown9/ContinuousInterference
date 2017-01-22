@@ -1,16 +1,12 @@
 package model;
 
+import java.awt.Rectangle;
+
 public class Player {
-<<<<<<< HEAD
-	public static final float RADIUS = 20;
-	public static final float TOLERANCE = 10;
-	public static final float PICKUP_RANGE = 100;
-	
-=======
+	public static final float RADIUS = 5;
 	private static final float TOLERANCE = 0.5f;
 	private static final float PICKUP_RANGE = 10;
 
->>>>>>> cdb63bf... Added: game
 	private GameModel gM;
 	private float x, y;
 	private float tX, tY;
@@ -22,43 +18,45 @@ public class Player {
 		this.gM = gM;
 		this.x = initX;
 		this.y = initY;
+		tX = initX;
+		tY = initY;
 		this.speed = speed;
 	}
 
-	public synchronized void update(float time) {
-<<<<<<< HEAD
-		float distance = (float) Math.sqrt((x-tX)*(x-tX)+(y-tY)*(y-tY));
-		
-		if(distance < TOLERANCE) {
-			tryMove((float)(time*speed*Math.sin(theta)),(float)(time*speed*Math.cos(theta)));
-		} 
-	}
-	
-	private void tryMove(float x, float y) {
-		Level curLevel = gM.getCurrentLevel();
-		
-		for(Obstacle obs: curLevel.getObstacles()) {
-			if(obs.getRect().contains((int)x, (int)y)) {
-				return;
-			}
-		}
-		
-		this.x = x;
-		this.y = y;
-=======
+	public synchronized void update(float deltaTime) {
 		float distance = (float) Math.sqrt((x - tX) * (x - tX) + (y - tY) * (y - tY));
 
 		if (distance > TOLERANCE) {
-			x += time * speed * Math.sin(theta - Math.PI/2);
-			y += time * speed * Math.cos(theta + Math.PI/2);
+			float xMove = (float) (deltaTime * speed * Math.sin(theta - Math.PI / 2));
+			float yMove = (float) (deltaTime * speed * Math.cos(theta + Math.PI / 2));
+			tryMove(xMove, yMove);
 		}
-		
+
 		if (heldItem != null) {
 			heldItem.setLocation(x, y);
 		}
+	}
 
-		// TODO: collision detection
->>>>>>> cdb63bf... Added: game
+	/**
+	 * 
+	 * @param dx
+	 *            amount to move player, delta x
+	 * @param dy
+	 */
+	private void tryMove(float dx, float dy) {
+		Level curLevel = gM.getCurrentLevel();
+
+		for (Obstacle obs : curLevel.getObstacles()) {
+			Rectangle obstacleRect = new Rectangle(obs.getRect());
+			obstacleRect.grow((int)RADIUS, (int)RADIUS);
+			if (obstacleRect.contains((int) x + dx, (int) y + dy)) {
+				return;
+			}
+		}
+
+		this.x += dx;
+		this.y += dy;
+
 	}
 
 	public synchronized void setTargetPoint(float x, float y) {
@@ -66,21 +64,12 @@ public class Player {
 		this.tY = y;
 		this.theta = (float) Math.atan2(this.y - y, this.x - x);
 	}
-<<<<<<< HEAD
-	
-	public synchronized float getX() {
-		return x;
-	}
-	
-	public synchronized float getY() {
-=======
 
 	public synchronized double getX() {
 		return x;
 	}
 
 	public synchronized double getY() {
->>>>>>> cdb63bf... Added: game
 		return y;
 	}
 
@@ -99,22 +88,18 @@ public class Player {
 	public synchronized void drop() {
 		dropItem();
 	}
-<<<<<<< HEAD
-	
+
 	public synchronized boolean isHoldingItem() {
 		return heldItem == null;
 	}
-	
-=======
 
->>>>>>> cdb63bf... Added: game
 	private boolean pickupItem(Source source) {
 		if (heldItem != null) {
 			drop();
 		}
 
 		heldItem = source;
-		//heldItem.setActive(false);
+		// heldItem.setActive(false);
 		return true;
 	}
 
@@ -123,16 +108,9 @@ public class Player {
 			return;
 		}
 
-		//heldItem.setActive(true);
+		// heldItem.setActive(true);
 		heldItem.setLocation(x, y);
 
 		heldItem = null;
 	}
-<<<<<<< HEAD
-=======
-
-	public synchronized boolean isHoldingItem() {
-		return heldItem == null;
-	}
->>>>>>> cdb63bf... Added: game
 }

@@ -15,15 +15,9 @@ public class GameEngine extends UpdateThread implements EngineInterface, EventHa
 	private GameModel model;
 	private TimeProvider tProv;
 	private Player player;
-<<<<<<< HEAD
 	
 	public GameEngine(Point start, List<String> fileContents, TimeProvider tProv, CompletionListener cL) {
 		model = new GameModel(start,fileContents,cL);
-=======
-
-	public GameEngine(Point start, List<String> fileContents, TimeProvider tProv) {
-		model = new GameModel(start, fileContents);
->>>>>>> cdb63bf... Added: game
 		player = model.getPlayer();
 		this.tProv = tProv;
 	}
