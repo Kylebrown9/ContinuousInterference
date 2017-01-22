@@ -7,6 +7,7 @@ public class Target {
 	private float x,y;
 	private double targetVal, tolerance;
 	private Level level;
+
 	private Channel channel;
 	
 	public Target(Level level, String name, float x, float y, float targetVal, float tolerance) {
@@ -72,5 +73,13 @@ public class Target {
 	
 	public float getY() {
 		return y;
+	}
+
+	public double getTargetVal() {
+		return targetVal;
+	}
+
+	public void setTargetVal(double targetVal) {
+		this.targetVal = targetVal;
 	}
 }

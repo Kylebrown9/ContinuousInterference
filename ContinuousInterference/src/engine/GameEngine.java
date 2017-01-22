@@ -15,20 +15,32 @@ public class GameEngine extends UpdateThread implements EngineInterface, EventHa
 	private GameModel model;
 	private TimeProvider tProv;
 	private Player player;
+<<<<<<< HEAD
 	
 	public GameEngine(Point start, List<String> fileContents, TimeProvider tProv, CompletionListener cL) {
 		model = new GameModel(start,fileContents,cL);
+=======
+
+	public GameEngine(Point start, List<String> fileContents, TimeProvider tProv) {
+		model = new GameModel(start, fileContents);
+>>>>>>> cdb63bf... Added: game
 		player = model.getPlayer();
 		this.tProv = tProv;
 	}
 
-	public void update() {
-		model.update(tProv.getTime());
+	/**
+	 * 
+	 * @param deltaTime
+	 *            seconds since last update
+	 */
+	public void update(float deltaTime) {
+		model.update(tProv.getTime(), deltaTime);
 	}
 
-	public void notifyKeyEvent(KeyEvent ke) {
-		if(ke.getKeyCode() == KeyEvent.VK_SPACE) {
-			if(player.isHoldingItem()) {
+	public void notifyKeyEvent(int keycode) {
+		// LibGDX key code for space
+		if (keycode == 62) {
+			if (player.isHoldingItem()) {
 				player.pickup();
 			} else {
 				player.drop();
@@ -37,9 +49,9 @@ public class GameEngine extends UpdateThread implements EngineInterface, EventHa
 	}
 
 	public void notifyClick(float x, float y) {
-		player.setTargetPoint(x,y);
+		player.setTargetPoint(x, y);
 	}
-	
+
 	public GameModel getModel() {
 		return model;
 	}
