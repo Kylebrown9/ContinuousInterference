@@ -61,8 +61,8 @@ public class GameModel {
 		return null;
 	}
 
-	public void update(float time, float deltaTime) {
-		player.update(deltaTime);
+	public void update(float time) {
+		player.update(time);
 
 		for (Level l : getActiveLevels()) {
 			l.update(time);

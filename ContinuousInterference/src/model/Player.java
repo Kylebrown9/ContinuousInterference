@@ -23,7 +23,10 @@ public class Player {
 		this.speed = speed;
 	}
 
-	public synchronized void update(float deltaTime) {
+	float lastTime = 0;
+	
+	public synchronized void update(float time) {
+		float deltaTime = time-lastTime;
 		float distance = (float) Math.sqrt((x - tX) * (x - tX) + (y - tY) * (y - tY));
 
 		if (distance > TOLERANCE) {
@@ -35,6 +38,8 @@ public class Player {
 		if (heldItem != null) {
 			heldItem.setLocation(x, y);
 		}
+		
+		lastTime = time;
 	}
 
 	/**

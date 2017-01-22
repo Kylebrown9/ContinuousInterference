@@ -26,8 +26,8 @@ public class GameEngine extends UpdateThread implements EngineInterface, EventHa
 	 * @param deltaTime
 	 *            seconds since last update
 	 */
-	public void update(float deltaTime) {
-		model.update(tProv.getTime(), deltaTime);
+	public void update() {
+		model.update(tProv.getTime());
 	}
 
 	public void notifyKeyEvent(int keycode) {
