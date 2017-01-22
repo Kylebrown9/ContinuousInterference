@@ -15,12 +15,14 @@ public class Level implements LogicListener {
 	private List<Source> sources;
 	private List<Target> targets;
 
-	ChannelSet channels;
+	private ChannelSet channels;
 	private boolean done = false;
+	private int offset;
 	
-	public Level(int width, int height) {
+	public Level(int width, int height, int offset) {
 		channels = new ChannelSet();
 		dimensions = new Dimension(width,height);
+		this.offset = offset;
 	}
 	
 	public void update(float time) {
@@ -77,5 +79,9 @@ public class Level implements LogicListener {
 	
 	public boolean isDone() {
 		return done;
+	}
+	
+	public boolean inLevel(float x) {
+		return x>offset && x<offset+dimensions.getWidth();
 	}
 }

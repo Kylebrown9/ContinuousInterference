@@ -23,11 +23,21 @@ public class Player {
 		float distance = (float) Math.sqrt((x-tX)*(x-tX)+(y-tY)*(y-tY));
 		
 		if(distance < TOLERANCE) {
-			x += time*speed*Math.sin(theta);
-			y += time*speed*Math.cos(theta);
+			tryMove((float)(time*speed*Math.sin(theta)),(float)(time*speed*Math.cos(theta)));
 		} 
+	}
+	
+	private void tryMove(float x, float y) {
+		Level curLevel = gM.getCurrentLevel();
 		
-		//TODO: collision detection
+		for(Obstacle obs: curLevel.getObstacles()) {
+			if(obs.getRect().contains((int)x, (int)y)) {
+				return;
+			}
+		}
+		
+		this.x = x;
+		this.y = y;
 	}
 
 	public synchronized void setTargetPoint(float x, float y) {
@@ -36,11 +46,11 @@ public class Player {
 		this.theta = (float) Math.atan2(this.x-x, this.y-y);
 	}
 	
-	public synchronized double getX() {
+	public synchronized float getX() {
 		return x;
 	}
 	
-	public synchronized double getY() {
+	public synchronized float getY() {
 		return y;
 	}
 	
@@ -58,6 +68,10 @@ public class Player {
 	
 	public synchronized void drop() {
 		dropItem();
+	}
+	
+	public synchronized boolean isHoldingItem() {
+		return heldItem == null;
 	}
 	
 	private boolean pickupItem(Source source) {
@@ -79,9 +93,5 @@ public class Player {
 		heldItem.setLocation(x, y);
 		
 		heldItem = null;
-	}
-	
-	public synchronized boolean isHoldingItem() {
-		return heldItem == null;
 	}
 }

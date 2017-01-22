@@ -5,13 +5,15 @@ import java.util.List;
 
 public class Channel {
 	public enum Type {
-		OR,AND,VALUE,PERMANENT;
+		OR,AND,VALUE,PERMANENT,INVERTER;
 		public static Type fromString(String s) {
 			switch(s.toUpperCase()) {
 			case "OR":
 				return OR;
 			case "AND":
 				return AND;
+			case "INVERTER":
+				return INVERTER;
 			case "PERMANENT":
 				return PERMANENT;
 			case "VALUE":
@@ -49,16 +51,24 @@ public class Channel {
 		case OR:
 			out = false;
 			for(String name : sources) {
-				out = out || channels.get(name).getOutput();
+				out |= channels.get(name).getOutput();
 			}
 			setOutput(out);
 			break;
 		case AND:
 			out = true;
 			for(String name : sources) {
-				out = out && channels.get(name).getOutput();
+				out &= channels.get(name).getOutput();
 			}
 			setOutput(out);
+			break;
+		case INVERTER:
+			Channel input = channels.get(sources.get(0));
+			if(input != null) {
+				setOutput(!input.getOutput());
+			} else {
+				setOutput(true);
+			}
 			break;
 		case VALUE:
 			setOutput(signal);

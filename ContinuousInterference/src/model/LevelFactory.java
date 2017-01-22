@@ -12,7 +12,7 @@ public class LevelFactory {
 		Gson g = new Gson();
 		LevelDescriptor lD = g.fromJson(jsonText, LevelDescriptor.class);
 		
-		Level level = new Level(lD.width,lD.height);
+		Level level = new Level(lD.width,lD.height,offset);
 		
 		for(SourceDesc s: lD.sources) {
 			level.addSource(new Source(s.x+offset,s.y,s.h,s.v));
@@ -39,8 +39,6 @@ public class LevelFactory {
 			}
 		}
 		
-		channels.get(lD.succesChannel).setListener(level);
-		
 		return level;
 	}
 	
@@ -49,7 +47,6 @@ public class LevelFactory {
 		public TargetDesc[] targets;
 		public ChannelDesc[] channels;
 		public ObstacleDesc[] obsctacles;
-		public String succesChannel;
 		
 		public int width,height;
 	}

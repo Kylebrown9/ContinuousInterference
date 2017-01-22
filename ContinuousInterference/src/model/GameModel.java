@@ -20,23 +20,52 @@ public class GameModel {
 		}
 	}
 	
+	public int getCurrentLevelIndex() {
+		for(int i=0; i<levels.size(); i++) {
+			if(levels.get(i).inLevel(player.getX())) {
+				return i;
+			}
+		}
+			
+		return 0;
+	}
+	
+	public List<Level> getActiveLevels() {
+		List<Level> activeLevels = new ArrayList<>();
+		currentLevel = getCurrentLevelIndex();
+		
+		if(levels.get(currentLevel-1) != null)
+			activeLevels.add(levels.get(currentLevel-1));
+		
+		if(levels.get(currentLevel) != null)
+			activeLevels.add(levels.get(currentLevel));
+		
+		if(levels.get(currentLevel+1) != null)
+			activeLevels.add(levels.get(currentLevel+1));
+		
+		return activeLevels;
+	}
+	
+	public Level getCurrentLevel() {
+		for(int i=0; i<levels.size(); i++) {
+			if(levels.get(i).inLevel(player.getX())) {
+				return levels.get(i);
+			}
+		}
+			
+		return null;
+	}
+	
 	public void update(float time) {
 		player.update(time);
 		
-		levels.get(currentLevel-1).update(time);
-		levels.get(currentLevel).update(time);
-		
-		if(levels.get(currentLevel).isDone()) {
-			currentLevel++;
+		for(Level l : getActiveLevels()) {
+			l.update(time);
 		}
 	}
 	
 	public void addLevel(Level l) {
 		levels.add(l);
-	}
-	
-	public Level getCurrentLevel() {
-		return levels.get(currentLevel);
 	}
 	
 	public Level getLevel(int i) {
