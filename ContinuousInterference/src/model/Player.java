@@ -43,10 +43,7 @@ public class Player {
 	}
 
 	/**
-	 * 
-	 * @param dx
-	 *            amount to move player, delta x
-	 * @param dy
+	 * @param dy amount to move player, delta x
 	 */
 	private void tryMove(float dx, float dy) {
 		Level curLevel = gM.getCurrentLevel();
