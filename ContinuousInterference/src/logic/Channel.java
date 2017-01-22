@@ -65,6 +65,7 @@ public class Channel {
 	private void setOutput(boolean out) {
 		if(output != out) {
 			output = out;
+			System.out.println("ChannelVa: " + output);
 			updateDependents();
 			if(listener != null) {
 				listener.notify(output);
