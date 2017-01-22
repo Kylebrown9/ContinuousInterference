@@ -189,8 +189,8 @@ public class MainGameScreen extends ScreenAdapter {
 	 */
 	private void addDebugLevels() {
 		Level l = new Level(80, 90, 0);
-		l.addObstacle(new Obstacle(new Rectangle(20, 20, 30, 10), false, 1));
-		l.addObstacle(new Obstacle(new Rectangle(10, 60, 30, 10), true, 2));
+		l.addObstacle(new Obstacle(new Rectangle(20, 20, 30, 10), false));
+		l.addObstacle(new Obstacle(new Rectangle(10, 60, 30, 10), true));
 		l.addSource(new Source(50, 60, 5, 10));
 		l.addSource(new Source(10, 10, 2, 10));
 		l.addTarget(new Target(l, "bojack", 80, 80, -1, 0.04f));
@@ -332,7 +332,7 @@ public class MainGameScreen extends ScreenAdapter {
 
 		// Targets
 		for (Target t : getAllTargets()) {
-			shapeRenderer.setColor(ColorUtils.HSV_to_RGB((float) (worldHue, 50, 100));
+			shapeRenderer.setColor(ColorUtils.HSV_to_RGB((float) (worldHue), s((float) t.getTargetVal()), 100));
 			shapeRenderer.circle(t.getX(), t.getY(), 3, 25);
 		}
 
