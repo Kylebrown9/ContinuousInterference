@@ -3,6 +3,8 @@ package model;
 import waves.WaveEquation;
 
 public class Source {
+	public static final float RADIUS = Player.RADIUS/2;
+	
 	private float x,y;
 	private WaveEquation wE;
 	private boolean active = true;
@@ -34,9 +36,9 @@ public class Source {
 		}
 	}
 	
-	public double getActivation(long time) {
+	public float getActivation(float time) {
 		if(active) {
-			return wE.evaluate(time,0);	
+			return wE.evaluate(time,RADIUS);	
 		} else {
 			return 0;
 		}

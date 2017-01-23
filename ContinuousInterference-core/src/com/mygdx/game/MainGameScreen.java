@@ -47,11 +47,13 @@ public class MainGameScreen extends ScreenAdapter {
 	public static final float VP_HEIGHT = 90;
 
 	private float wavesWidth = 160;
-	private float wavesHeight = wavesWidth * (VP_WIDTH / VP_HEIGHT);
+//	private float wavesHeight = wavesWidth * (VP_WIDTH / VP_HEIGHT);
+	private float wavesHeight = (wavesWidth/VP_WIDTH) * VP_HEIGHT;
 	private float wavesCoordScale = VP_HEIGHT / wavesHeight;
 
 	private void setWavesTextureSize(float wavesWidth) {
-		wavesHeight = wavesWidth * (VP_WIDTH / VP_HEIGHT);
+//		wavesHeight = wavesWidth * (VP_WIDTH / VP_HEIGHT);
+		wavesHeight = (wavesWidth/VP_WIDTH) * VP_HEIGHT;
 		wavesCoordScale = VP_HEIGHT / wavesHeight;
 	}
 
@@ -75,8 +77,13 @@ public class MainGameScreen extends ScreenAdapter {
 	 */
 	private GameEngine gameEngine;
 
-	private float sourceAmplitude = 100F;
+	private float sourceAmplitude = 25F;
 
+	public Color getColor(float amplitude) {
+		return ColorUtils.HSV_to_RGB(worldHue, 50, sourceAmplitude*(amplitude+1.0f)/2.0f);
+	}
+	
+	
 	public MainGameScreen(MyGame g) {
 		// All the mundane initializations
 		game = g;
@@ -102,10 +109,12 @@ public class MainGameScreen extends ScreenAdapter {
 
 		// Initialize game engine
 		// TODO: Load games levels
-		FileHandle file = Gdx.files.internal("testLevel.json");
-		String testLevelText = file.readString();
+		String level1Text = Gdx.files.internal("level1.json").readString();
+		String level2Text = Gdx.files.internal("level2.json").readString();
 		LinkedList<String> levels = new LinkedList<String>();
-		levels.add(testLevelText);
+		levels.add(level1Text);
+		levels.add(level2Text);
+		
 		gameEngine = new GameEngine(new Point(5, 5), levels, new TimeProvider() {
 
 			@Override
@@ -270,16 +279,18 @@ public class MainGameScreen extends ScreenAdapter {
 				float xWorld = x * wavesCoordScale + cameraXOffset;
 				float yWorld = VP_HEIGHT - y * wavesCoordScale;
 
-				float sumAtPoint = 30;
+				float sumAtPoint = 0;//30;
 				sourceLoop: for (Source source : getAllSources()) {
 					if (source.isActive()) {
 						// Check that there is line of sight (no obstacles)
 						// between
 						// source and pixel under consideration
 						for (Obstacle o : getAllWaveObstacles()) {
-							if (o.getRect()
-									.intersectsLine(new Line2D.Float(xWorld, yWorld, source.getX(), source.getY()))) {
-								continue sourceLoop;
+							if (o.getActive()) {
+								if (o.getRect().intersectsLine(
+										new Line2D.Float(xWorld, yWorld, source.getX(), source.getY()))) {
+									continue sourceLoop;
+								}
 							}
 						}
 
@@ -288,14 +299,12 @@ public class MainGameScreen extends ScreenAdapter {
 						float dx = Math.abs(xWorld - source.getX());
 						float dy = Math.abs(yWorld - source.getY());
 						float dist = (float) Math.sqrt(dx * dx + dy * dy);
-
-						float valueAtPoint = source.getWaveEquation().evaluate(currTime, dist);
-						valueAtPoint = valueAtPoint / 2 + 0.5f;
-						sumAtPoint += valueAtPoint * sourceAmplitude;
+						// valueAtPoint = valueAtPoint / 2 + 0.5f;
+						sumAtPoint += source.getWaveEquation().evaluate(currTime, dist);
 					}
 				}
 
-				wavePix.drawPixel(x, y, Color.rgba8888((ColorUtils.HSV_to_RGB(worldHue, 50, sumAtPoint))));
+				wavePix.drawPixel(x, y, Color.rgba8888(getColor(sumAtPoint)));
 			}
 		}
 
@@ -310,12 +319,13 @@ public class MainGameScreen extends ScreenAdapter {
 
 		// Wave Plane
 		batch.begin();
-		batch.draw(waveTexture, cameraXOffset, 0.5f, viewport.getWorldWidth(), viewport.getWorldHeight());
+//		batch.draw(waveTexture, cameraXOffset - 0.25f, 0.25f, viewport.getWorldWidth(), viewport.getWorldHeight());
+		batch.draw(waveTexture, cameraXOffset, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
 		batch.end();
 
 		// Player
 		shapeRenderer.begin(ShapeType.Filled);
-		shapeRenderer.setColor(Color.FIREBRICK);
+		shapeRenderer.setColor(getBackgroundAtX(160));
 		shapeRenderer.circle((float) gameEngine.getModel().getPlayer().getX(),
 				(float) gameEngine.getModel().getPlayer().getY(), Player.RADIUS, 100);
 		// System.out.println(gameEngine.getModel().getPlayer().getX() + ":" +
@@ -324,9 +334,9 @@ public class MainGameScreen extends ScreenAdapter {
 		// Sources
 		for (Source s : getAllSources()) {
 			if (s.isActive()) {
-				shapeRenderer.setColor(ColorUtils.HSV_to_RGB(worldHue, 50,
-						sourceAmplitude * s(s.getWaveEquation().evaluate(currTime, 0))));
-				shapeRenderer.circle(s.getX(), s.getY(), Player.RADIUS / 2, 100);
+				shapeRenderer
+						.setColor(getColor(s.getActivation(currTime)));//ColorUtils.HSV_to_RGB(worldHue, 50, sourceAmplitude * s()));
+				shapeRenderer.circle(s.getX(), s.getY(), Source.RADIUS, 100);
 			}
 		}
 
@@ -348,7 +358,7 @@ public class MainGameScreen extends ScreenAdapter {
 		doorPixmap.dispose();
 		batch.begin();
 		for (int i = 0; i <= gameEngine.getModel().getNumLevels(); i++) {
-			batch.draw(doorTexture, i * 80, 0, doorTexture.getWidth(), doorTexture.getHeight());
+//			batch.draw(doorTexture, i * 80, 0, doorTexture.getWidth(), doorTexture.getHeight());
 		}
 		batch.end();
 		doorTexture.dispose();
@@ -389,7 +399,7 @@ public class MainGameScreen extends ScreenAdapter {
 	 * @return
 	 */
 	private Color getBackgroundAtX(float x) {
-		Color bgStart = ColorUtils.HSV_to_RGB(worldHue, 50, 0);
+		Color bgStart = ColorUtils.HSV_to_RGB(worldHue, 50, 15);
 		Color bgEnd = ColorUtils.HSV_to_RGB(worldHue, 50, 100);
 
 		// Width of all levels

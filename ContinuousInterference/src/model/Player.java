@@ -59,10 +59,12 @@ public class Player {
 		}
 
 		for (Obstacle obs : curLevel.getObstacles()) {
-			Rectangle obstacleRect = new Rectangle(obs.getRect());
-			obstacleRect.grow((int) RADIUS * 2 / 3, (int) RADIUS * 2 / 3);
-			if (obstacleRect.contains((int) x + dx, (int) y + dy)) {
-				return;
+			if (obs.getActive()) {
+				Rectangle obstacleRect = new Rectangle(obs.getRect());
+				obstacleRect.grow((int) RADIUS * 2 / 3, (int) RADIUS * 2 / 3);
+				if (obstacleRect.contains((int) x + dx, (int) y + dy)) {
+					return;
+				}
 			}
 		}
 
@@ -97,7 +99,7 @@ public class Player {
 	}
 
 	public synchronized void drop() {
-		dropItem();
+//		dropItem();
 	}
 
 	public synchronized boolean isHoldingItem() {

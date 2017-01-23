@@ -36,19 +36,20 @@ public class GameModel {
 	}
 
 	public List<Level> getActiveLevels() {
-		List<Level> activeLevels = new ArrayList<>();
-		int currentLevel = getCurrentLevelIndex();
+//		List<Level> activeLevels = new ArrayList<>();
+//		int currentLevel = getCurrentLevelIndex();
+//
+//		if (currentLevel > 0 && levels.get(currentLevel - 1) != null)
+//			activeLevels.add(levels.get(currentLevel - 1));
+//
+//		if (levels.get(currentLevel) != null)
+//			activeLevels.add(levels.get(currentLevel));
+//
+//		if (levels.size() < currentLevel && levels.get(currentLevel + 1) != null)
+//			activeLevels.add(levels.get(currentLevel + 1));
 
-		if (currentLevel > 0 && levels.get(currentLevel - 1) != null)
-			activeLevels.add(levels.get(currentLevel - 1));
-
-		if (levels.get(currentLevel) != null)
-			activeLevels.add(levels.get(currentLevel));
-
-		if (levels.size() < currentLevel && levels.get(currentLevel + 1) != null)
-			activeLevels.add(levels.get(currentLevel + 1));
-
-		return activeLevels;
+		return levels;
+//		return activeLevels;
 	}
 
 	public Level getCurrentLevel() {

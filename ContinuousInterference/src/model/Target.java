@@ -64,7 +64,7 @@ public class Target {
 	}
 	
 	private void setInput(double input) {
-		System.out.println("target: " + input);
+//		System.out.println("target: " + input);
 		channel.update(Math.abs(targetVal-input) < tolerance);
 	}
 	

@@ -6,7 +6,7 @@ import logic.LogicListener;
 
 public class Obstacle implements LogicListener {
 	private Rectangle rect;
-	private boolean active;
+	private boolean active = true;
 	private boolean permittive;
 	
 	public Obstacle(Rectangle rect, boolean permittive) {
@@ -16,6 +16,7 @@ public class Obstacle implements LogicListener {
 	
 	public void setActive(boolean a) {
 		active = a;
+		System.out.println("Obs Value Set: " + a);
 	}
 	
 	public boolean getActive() {

@@ -55,7 +55,11 @@ public class Channel {
 			setOutput(signal);
 			break;
 		case PERMANENT:
-			if(signal) {
+			out = false;
+			for(String name : sources) {
+				out |= channels.get(name).getOutput();
+			}
+			if(out) {
 				setOutput(true);
 			}
 			break;

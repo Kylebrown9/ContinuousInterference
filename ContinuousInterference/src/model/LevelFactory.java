@@ -36,6 +36,7 @@ public class LevelFactory {
 			if (!o.channel.equals("null")) {
 				channels.get(o.channel).setListener(obstacle);
 			}
+			System.out.println("OBS made");
 		}
 
 		level.addObstacle(new Obstacle(new Rectangle(offset, INSET-PADDING, lD.width, PADDING), false));

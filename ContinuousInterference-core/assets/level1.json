@@ -1,0 +1,80 @@
+{
+	"width": 80,
+	"height": 90,
+	
+	"sources": [
+		{
+			"x": 10.0,
+			"y": 30.0,
+			"h": 0.2,
+			"v": 1
+		},
+		{
+			"x": 10.0,
+			"y": 30.0,
+			"h": 1,
+			"v": 1
+		}
+	],
+	
+	"targets": [],
+	"channels": [],
+	
+	
+	"obstacles": [
+		{
+			"x": 15,
+			"y": 0,
+			"width": 10,
+			"height": 70,
+			
+			"permittivity": false,
+			"channel": "null"
+		},
+		{
+			"x": 25,
+			"y": 60,
+			"width": 50,
+			"height": 10,
+			
+			"permittivity": false,
+			"channel": "null"
+		},
+		{
+			"x": 40,
+			"y": 35,
+			"width": 60,
+			"height": 10,
+			
+			"permittivity": false,
+			"channel": "null"
+		},
+		{
+			"x": 40,
+			"y": 20,
+			"width": 10,
+			"height": 20,
+			
+			"permittivity": false,
+			"channel": "null"
+		},
+		{
+			"x": 65,
+			"y": 0,
+			"width": 10,
+			"height": 20,
+			
+			"permittivity": false,
+			"channel": "null"
+		},
+		{
+			"x": 90,
+			"y": 15,
+			"width": 10,
+			"height": 75,
+			
+			"permittivity": false,
+			"channel": "null"
+		}
+	]
+}
